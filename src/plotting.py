@@ -64,9 +64,10 @@ def get_kline_data_plot(symbols_intervals: list, start_date: str, end_date: str)
         kline_data = get_binance_kline_data(start_date=start_date, end_date=end_date, symbol_data_required={symbol: [interval]})
         fig_temp = go.Candlestick(x=kline_data['close time'], open=kline_data['open'], high=kline_data['high'],
                                      low=kline_data['low'], close=kline_data['close'])
-        # fig_temp.update(fig.update_layout(xaxis_rangeslider_visible=False))
         fig.add_trace(fig_temp, row=row_count, col=1)
         row_count += 1
+
+    fig.update_xaxes(rangeslider_visible=False)
 
     return fig
 
