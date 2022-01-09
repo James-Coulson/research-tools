@@ -804,7 +804,7 @@ class CointResult:
 
                 # Add price to coint and increment counter
                 for i in range(len(self.symbols)):
-                    coint['price_{}'.format(i)] = data['close'] * self.test_result.evec[i][count]
+                    coint['price_{}'.format(i)] = coint['price_{}'.format(i)] + data['close'] * self.test_result.evec[i][count]
                 count += 1
 
         # If only the cointegrating asset should be plotted
@@ -816,7 +816,7 @@ class CointResult:
             else:
                 fig = make_subplots(rows=len(self.symbols), cols=1, x_title='Time (UNIX)', y_title='Price')
                 for i in range(len(self.symbols)):
-                    fig.append_trace(go.Scatter(x=coint['time'], y=coint['price_{}'.format(i)], name="{}".format('Cointegrating ({})'.format(i))),
+                    fig.append_trace(go.Scatter(x=coint['time'], y=coint['price_{}'.format(i)], name='Cointegrating ({})'.format(i)),
                                      row=i+1, col=1)
             return fig
 
@@ -831,8 +831,7 @@ class CointResult:
             fig = make_subplots(rows=len(self.symbols)*2, cols=1, x_title='Time (UNIX)', y_title='Price')
             for i in range(len(self.symbols)):
                 fig.append_trace(go.Scatter(x=coint['time'], y=coint['price_{}'.format(i)],
-                                            name="{}".format('Cointegrating ({})'.format(i))),
-                                 row=i+1, col=1)
+                                            name="{}".format('Cointegrating ({})'.format(i))), row=i+1, col=1)
             # Define counter
             count = len(self.symbols) + 1
 
@@ -873,8 +872,6 @@ def test_coint_johansen(symbols, interval: str, start_date: str, end_date: str, 
 
         # Add close data to close_data
         close_data[symbol] = data['close']
-
-    print(close_data)
 
     # Perform Johansen test
     result = coint_johansen(close_data, def_order, k_ar_diff)
